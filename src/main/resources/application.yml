@@ -1,0 +1,36 @@
+azure:
+  activedirectory:
+    tenant-id: <my-tenant-id>
+    active-directory-groups: TestGroup
+    environment: global-v2-graph
+    user-group:
+      allowed-groups: TestGroup
+  service:
+    endpoints:
+      global-v2-graph:
+        aadSigninUri: https://login.microsoftonline.com/
+        aadGraphApiUri: https://graph.microsoft.com/
+        aadMembershipRestUri: https://graph.microsoft.com/v1.0/me/memberOf
+        aadKeyDiscoveryUri: https://login.microsoftonline.com/common/discovery/keys/
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          azure:
+            client-id: <my-client-id>
+            client-secret: <my-client-secret>
+            client-name: Azure
+            provider: azure-oauth-provider
+            scope: openid, https://graph.microsoft.com/user.read.all, https://graph.microsoft.com/mail.read, https://graph.microsoft.com/directory.accessasuser.all
+            client-authentication-method: post
+            authorization-grant-type: authorization_code
+            userNameAttribute: name
+
+        provider:
+          azure-oauth-provider.token-uri: "https://login.microsoftonline.com/<my-tenant-id>/oauth2/v2.0/token"
+          azure-oauth-provider.authorization-uri: "https://login.microsoftonline.com/<my-tenant-id>/oauth2/v2.0/authorize"
+          azure-oauth-provider.user-info-uri: "https://graph.microsoft.com/oidc/userinfo"
+          azure-oauth-provider.jwk-set-uri: "https://login.microsoftonline.com/<my-tenant-id>/discovery/v2.0/keys"
+          azure-oauth-provider.user-name-attribute: "name"
